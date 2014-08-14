@@ -1,0 +1,15 @@
+/*
+Theme Name: Gougs Template
+*/
+.floatleft {float:left}
+.floatright {float:right}
+.alignleft {float:left;margin-right:10px;}
+.alignright {float:right;margin-left:10px;}
+.aligncenter {display:block;margin:0 auto}
+a, a:active, a:focus, a:active {text-decoration:none !important}
+a:focus {outline:0px solid}
+img {max-width:100%}
+h1, h2, h3, h4, h5, h6 {font-weight:normal;margin:0 0 15px;}
+.column {width:1000px; margin:0 auto;display:block;transition: all 0.9s ease 0s;-moz-transition: all 0.9s ease 0s;-webkit-transition: all 0.9s ease 0s;-o-transition: all 0.9s ease 0s;}
+ul {margin:0;padding:0;list-style:none}
+body {}
