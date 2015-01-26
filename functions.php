@@ -1,19 +1,17 @@
 <?php 
 
  /* Adding Latest jQuery from Wordpress */
-function scroll_to_top_latest_jquery() {
+function ppm_quickstart_theme_latest_jquery() {
 	wp_enqueue_script('jquery');
 }
-add_action('init', 'scroll_to_top_latest_jquery');
+add_action('init', 'ppm_quickstart_theme_latest_jquery');
  
 add_action('init', 'wpj_register_menu');
 function wpj_register_menu() {
-	if (function_exists('register_nav_menu')) {
-		register_nav_menu( 'wpj-main-menu', __( 'Main Menu', 'bilanti' ) );
-	}
+	register_nav_menu( 'main-menu', __( 'Main Menu', 'bilanti' ) );
 } 
 
-add_theme_support( 'post-thumbnails', array( 'post', 'carousel-image' ) );
+add_theme_support( 'post-thumbnails' );
 add_image_size( 'post-image', 600, 200, true );
 	
 	

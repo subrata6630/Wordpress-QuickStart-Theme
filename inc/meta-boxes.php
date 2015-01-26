@@ -1,20 +1,8 @@
 <?php
-/**
- * Initialize the custom Meta Boxes. 
- */
-add_action( 'admin_init', 'custom_meta_boxes' );
-
-/**
- * Meta Boxes demo code.
- *
- * You can find all the available option types in demo-theme-options.php.
- *
- * @return    void
- * @since     2.0
- */
-function custom_meta_boxes() {
+add_action( 'admin_init', 'ppm_quickstart_custom_meta_boxes' );
 
 
+function ppm_quickstart_custom_meta_boxes() {
 
   $event_meta_box = array(
     'id'          => 'event_meta_box',

@@ -1,12 +1,12 @@
 <?php 
 
-function wishlist_shortcode($atts){
+function custom_shortcode($atts){
 	extract( shortcode_atts( array(
 		'expand' => '',
-	), $atts, 'wishlist' ) );
+	), $atts) );
 	
     $q = new WP_Query(
-        array('posts_per_page' => '4', 'post_type' => 'wishlist-items', 'meta_key' => 'order_number','orderby' => 'meta_value','order' => 'ASC')
+        array('posts_per_page' => '4', 'post_type' => 'cpt', 'orderby' => 'menu_order','order' => 'ASC')
         );		
 		
 		
@@ -31,10 +31,7 @@ function wishlist_shortcode($atts){
 	wp_reset_query();
 	return $list;
 }
-add_shortcode('wishlist', 'wishlist_shortcode');	
-
-
-
+add_shortcode('custom', 'custom_shortcode');	
 
 
 
@@ -44,15 +41,12 @@ function core_list_shortcode( $atts, $content = null  ) {
 		'id' => '',
 	), $atts ) );
 
-	return 'jQuery("#codeapp'.$id.'").show();';
+	return '
+        '.do_shortcode($content).'
+    ';
 }	
 add_shortcode('core', 'core_list_shortcode');
 
-
-function column_shortcode( $atts, $content = null  ) {
-	return '<div class="column_content">'.do_shortcode($content).'</div>';
-}	
-add_shortcode('col', 'column_shortcode');
 
 
 ?>

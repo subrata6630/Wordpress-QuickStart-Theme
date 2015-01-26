@@ -2,7 +2,7 @@
 /**
  * Initialize the options before anything else. 
  */
-add_action( 'admin_init', '_custom_theme_options', 1 );
+add_action( 'admin_init', 'ppm_quickstart_custom_theme_options', 1 );
 
 /**
  * Theme Mode demo code of all the available option types.
@@ -12,7 +12,7 @@ add_action( 'admin_init', '_custom_theme_options', 1 );
  * @access    private
  * @since     2.0
  */
-function _custom_theme_options() {
+function ppm_quickstart_custom_theme_options() {
   
   /**
    * Get a copy of the saved settings array. 
