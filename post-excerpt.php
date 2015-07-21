@@ -8,7 +8,7 @@
 
 <?php if(have_posts()) : ?>
 <?php while (have_posts()) : the_post(); ?>		
-	<div class="single-post">
+	<div class="single-post-item">
 		<a href="<?php the_permalink(); ?>">
 		<?php the_post_thumbnail('thumbnail', array('class' => 'alignleft')); ?>
 		<h2><?php the_title(); ?></h2></a>
