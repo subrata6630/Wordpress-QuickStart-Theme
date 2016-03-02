@@ -9,8 +9,7 @@ function ppm_quickstart_theme_custom_post() {
 				'add_new_item' => __( 'Add New CPT' )
 			),
 			'public' => true,
-			'supports' => array('title', 'editor', 'custom-fields', 'thumbnail', 'excerpt', 'page-attributes'),
-			'has_archive' => true,
+			'supports' => array('title', 'editor', 'custom-fields', 'thumbnail', 'page-attributes'),
 		)
 	);
 	
