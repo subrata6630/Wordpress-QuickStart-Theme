@@ -9,7 +9,7 @@ function ppm_quickstart_theme_custom_post() {
 				'add_new_item' => __( 'Add New CPT' )
 			),
 			'public' => true,
-			'supports' => array('title', 'editor', 'custom-fields', 'thumbnail', 'page-attributes'),
+			'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
 		)
 	);
 	
@@ -34,5 +34,3 @@ function ppm_quickstart_custom_post_taxonomy() {
 	);
 }
 add_action( 'init', 'ppm_quickstart_custom_post_taxonomy');   
-
-?>
