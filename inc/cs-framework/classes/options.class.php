@@ -122,25 +122,39 @@ abstract class CSFramework_Options extends CSFramework_Abstract {
       $value = $this->element_value();
 
       $out .= "<pre>";
-      $out .= "<strong>". __( 'CONFIG', CS_TEXTDOMAIN ) .":</strong>";
+      $out .= "<strong>". __( 'CONFIG', 'cs-framework' ) .":</strong>";
       $out .= "\n";
       ob_start();
       var_export( $this->field );
       $out .= htmlspecialchars( ob_get_clean() );
       $out .= "\n\n";
-      $out .= "<strong>". __( 'USAGE', CS_TEXTDOMAIN ) .":</strong>";
+      $out .= "<strong>". __( 'USAGE', 'cs-framework' ) .":</strong>";
       $out .= "\n";
       $out .= ( isset( $this->field['id'] ) ) ? "cs_get_option( '". $this->field['id'] ."' );" : '';
 
       if( ! empty( $value ) ) {
         $out .= "\n\n";
-        $out .= "<strong>". __( 'VALUE', CS_TEXTDOMAIN ) .":</strong>";
+        $out .= "<strong>". __( 'VALUE', 'cs-framework' ) .":</strong>";
         $out .= "\n";
         ob_start();
         var_export( $value );
         $out .= htmlspecialchars( ob_get_clean() );
       }
 
+      $out .= "</pre>";
+
+    }
+
+    if( ( isset( $this->field['debug_light'] ) && $this->field['debug_light'] === true ) || ( defined( 'CS_OPTIONS_DEBUG_LIGHT' ) && CS_OPTIONS_DEBUG_LIGHT ) ) {
+
+      $out .= "<pre>";
+      $out .= "<strong>". __( 'USAGE', 'cs-framework' ) .":</strong>";
+      $out .= "\n";
+      $out .= ( isset( $this->field['id'] ) ) ? "cs_get_option( '". $this->field['id'] ."' );" : '';
+      $out .= "\n";
+      $out .= "<strong>". __( 'ID', 'cs-framework' ) .":</strong>";
+      $out .= "\n";
+      $out .= ( isset( $this->field['id'] ) ) ? $this->field['id'] : '';
       $out .= "</pre>";
 
     }
@@ -210,7 +224,7 @@ abstract class CSFramework_Options extends CSFramework_Abstract {
 
       $out .= '<input type="hidden" name="'. $this->element_name( '[multilang]', true ) .'" value="true" />';
       $out .= '</fieldset>';
-      $out .= '<p class="cs-text-desc">'. sprintf( __( 'You are editing language: ( <strong>%s</strong> )', CS_TEXTDOMAIN ), $this->multilang['current'] ) .'</p>';
+      $out .= '<p class="cs-text-desc">'. sprintf( __( 'You are editing language: ( <strong>%s</strong> )', 'cs-framework' ), $this->multilang['current'] ) .'</p>';
 
     }
 
@@ -228,6 +242,7 @@ abstract class CSFramework_Options extends CSFramework_Abstract {
       case 'page':
 
         $pages = get_pages( $query_args );
+
         if ( ! is_wp_error( $pages ) && ! empty( $pages ) ) {
           foreach ( $pages as $page ) {
             $options[$page->ID] = $page->post_title;
@@ -240,6 +255,7 @@ abstract class CSFramework_Options extends CSFramework_Abstract {
       case 'post':
 
         $posts = get_posts( $query_args );
+
         if ( ! is_wp_error( $posts ) && ! empty( $posts ) ) {
           foreach ( $posts as $post ) {
             $options[$post->ID] = $post->post_title;
@@ -252,7 +268,8 @@ abstract class CSFramework_Options extends CSFramework_Abstract {
       case 'category':
 
         $categories = get_categories( $query_args );
-        if ( ! is_wp_error( $categories ) && ! empty( $categories ) && ! empty( $categories[0] ) ) {
+
+        if ( ! is_wp_error( $categories ) && ! empty( $categories ) && ! isset( $categories['errors'] ) ) {
           foreach ( $categories as $category ) {
             $options[$category->term_id] = $category->name;
           }

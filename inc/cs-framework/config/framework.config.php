@@ -1,35 +1,30 @@
-<?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access pages directly.
-// ===============================================================================================
-// -----------------------------------------------------------------------------------------------
-// FRAMEWORK SETTINGS
-// -----------------------------------------------------------------------------------------------
-// ===============================================================================================
-$settings      = array(
-  'menu_title' => 'Theme Options',
-  'menu_type'  => 'add_menu_page',
-  'menu_slug'  => 'theme-options',
-  'ajax_save'  => false,
+<?php if ( ! defined( 'ABSPATH' ) ) { die; }
+
+$settings           = array(
+  'menu_title'      => 'Theme Options',
+  'menu_type'       => 'menu',
+  'menu_slug'       => 'ppm-theme-options',
+  'ajax_save'       => false,
+  'show_reset_all'  => false,
+  'framework_title' => 'Theme Options',
 );
 
-// ===============================================================================================
-// -----------------------------------------------------------------------------------------------
-// FRAMEWORK OPTIONS
-// -----------------------------------------------------------------------------------------------
-// ===============================================================================================
 $options        = array();
 
-// ------------------------------
-// a seperator                  -
-// ------------------------------
-$options[] = array(
-  'name'   => 'seperator_1',
-  'title'  => 'Advance Options',
-  'icon'   => 'fa fa-bookmark'
+
+$options[]      = array(
+  'name'        => 'general',
+  'title'       => 'General Settings',
+  'icon'        => 'fa fa-diamond',
+  'fields'      => array(
+    array(
+      'id'      => 'favicon',
+      'type'    => 'image',
+      'title'   => 'Favicon',
+    ),
+  ),
 );
 
-// ------------------------------
-// backup                       -
-// ------------------------------
 $options[]   = array(
   'name'     => 'backup_section',
   'title'    => 'Backup',
@@ -48,7 +43,5 @@ $options[]   = array(
 
   )
 );
-
-
 
 CSFramework::instance( $settings, $options );

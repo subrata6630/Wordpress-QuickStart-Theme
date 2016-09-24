@@ -535,7 +535,7 @@
       field_groups.sortable({
         axis: 'y',
         handle: '.cs-group-title',
-        helper: 'clone',
+        helper: 'original',
         cursor: 'move',
         placeholder: 'widget-placeholder',
         start: function( event, ui ) {
@@ -552,7 +552,7 @@
       });
 
       var i = 0;
-      $('.cs-add-group', _this).click( function( e ) {
+      $('.cs-add-group', _this).on('click', function( e ) {
 
         e.preventDefault();
 
@@ -596,7 +596,7 @@
   // ------------------------------------------------------
   $.fn.CSFRAMEWORK_CONFIRM = function() {
     return this.each( function() {
-      $(this).click( function( e ) {
+      $(this).on('click', function( e ) {
         if ( !confirm('Are you sure?') ) {
           e.preventDefault();
         }
@@ -608,35 +608,47 @@
   // ======================================================
   // CSFRAMEWORK SAVE OPTIONS
   // ------------------------------------------------------
-  $.fn.CSFRAMEWORK_SAVE_AJAX = function() {
+  $.fn.CSFRAMEWORK_SAVE = function() {
     return this.each( function() {
 
       var $this  = $(this),
-          $save  = $this.next(),
-          $ajax  = parseInt( $save.data('ajax') ),
-          $text  = $save.data('save'),
-          $value = $save.val();
+          $text  = $this.data('save'),
+          $value = $this.val(),
+          $ajax  = $('#cs-save-ajax');
 
-      $save.click( function ( e ) {
+      $(document).on('keydown', function(event) {
+        if (event.ctrlKey || event.metaKey) {
+          if( String.fromCharCode(event.which).toLowerCase() === 's' ) {
+            event.preventDefault();
+            $this.trigger('click');
+          }
+        }
+      });
 
-        if( $ajax ) {
+      $this.on('click', function ( e ) {
 
-          $save.prop('disabled', true).attr('value', $text);
+        if( $ajax.length ) {
+
+          if( typeof tinyMCE === 'object' ) {
+            tinyMCE.triggerSave();
+          }
+
+          $this.prop('disabled', true).attr('value', $text);
 
           var serializedOptions = $('#csframework_form').serialize();
 
           $.post( 'options.php', serializedOptions ).error( function() {
             alert('Error, Please try again.');
           }).success( function() {
-            $save.prop('disabled', false).attr('value', $value);
-            $this.hide().fadeIn().delay(250).fadeOut();
+            $this.prop('disabled', false).attr('value', $value);
+            $ajax.hide().fadeIn().delay(250).fadeOut();
           });
 
           e.preventDefault();
 
         } else {
 
-          $save.addClass('disabled').attr('value', $text);
+          $this.addClass('disabled').attr('value', $text);
 
         }
 
@@ -649,14 +661,16 @@
   // ======================================================
   // CSFRAMEWORK UI DIALOG OVERLAY HELPER
   // ------------------------------------------------------
-  $.widget( 'ui.dialog', $.ui.dialog, {
-      _createOverlay: function() {
-        this._super();
-        if ( !this.options.modal ) { return; }
-        this._on(this.overlay, {click: 'close'});
+  if( typeof $.widget !== 'undefined' && typeof $.ui !== 'undefined' && typeof $.ui.dialog !== 'undefined' ) {
+    $.widget( 'ui.dialog', $.ui.dialog, {
+        _createOverlay: function() {
+          this._super();
+          if ( !this.options.modal ) { return; }
+          this._on(this.overlay, {click: 'close'});
+        }
       }
-    }
-  );
+    );
+  }
 
   // ======================================================
   // CSFRAMEWORK ICONS MANAGER
@@ -765,7 +779,7 @@
 
               });
 
-              $load.find('.cs-icon-tooltip').tooltip({html:true, placement:'top', container:'body'});
+              $load.find('.cs-icon-tooltip').cstooltip({html:true, placement:'top', container:'body'});
 
             }
           });
@@ -817,6 +831,9 @@
       $cs_body.on('click', '.cs-shortcode', function( e ) {
 
         e.preventDefault();
+
+        // init chosen
+        $selector.CSFRAMEWORK_CHOSEN();
 
         $shortcode_button = $(this);
         shortcode_target  = $shortcode_button.hasClass('cs-shortcode-textarea');
@@ -898,7 +915,7 @@
 
       });
 
-      $insert.click( function ( e ) {
+      $insert.on('click', function ( e ) {
 
         e.preventDefault();
 
@@ -1052,7 +1069,7 @@
         // add - remove effects
         cloned_el.slideDown(100);
 
-        cloned_el.find('.cs-remove-clone').show().click( function( e ) {
+        cloned_el.find('.cs-remove-clone').show().on('click', function( e ) {
 
           cloned_el.slideUp(100, function(){ cloned_el.remove(); });
           e.preventDefault();
@@ -1138,7 +1155,7 @@
   // ======================================================
   // CSFRAMEWORK COLORPICKER
   // ------------------------------------------------------
-  if( typeof Color.fn.toString !== 'undefined' ) {
+  if( typeof Color === 'function' ) {
 
     // adding alpha support for Automattic Color.js toString function.
     Color.fn.toString = function () {
@@ -1317,7 +1334,7 @@
   // ON WIDGET-ADDED RELOAD FRAMEWORK PLUGINS
   // ------------------------------------------------------
   $.CSFRAMEWORK.WIDGET_RELOAD_PLUGINS = function() {
-    $(document).on('widget-added', function( event, $widget ) {
+    $(document).on('widget-added widget-updated', function( event, $widget ) {
       $widget.CSFRAMEWORK_RELOAD_PLUGINS();
       $widget.CSFRAMEWORK_DEPENDENCY();
     });
@@ -1329,7 +1346,7 @@
   $.fn.CSFRAMEWORK_TOOLTIP = function() {
     return this.each(function() {
       var placement = ( cs_is_rtl ) ? 'right' : 'left';
-      $(this).tooltip({html:true, placement:placement, container:'body'});
+      $(this).cstooltip({html:true, placement:placement, container:'body'});
     });
   };
 
@@ -1356,9 +1373,9 @@
   $(document).ready( function() {
     $('.cs-framework').CSFRAMEWORK_TAB_NAVIGATION();
     $('.cs-reset-confirm, .cs-import-backup').CSFRAMEWORK_CONFIRM();
-    $('.cs-content, .wp-customizer, .widget-content').CSFRAMEWORK_DEPENDENCY();
+    $('.cs-content, .wp-customizer, .widget-content, .cs-taxonomy').CSFRAMEWORK_DEPENDENCY();
     $('.cs-field-group').CSFRAMEWORK_GROUP();
-    $('#cs-save-ajax').CSFRAMEWORK_SAVE_AJAX();
+    $('.cs-save').CSFRAMEWORK_SAVE();
     $cs_body.CSFRAMEWORK_RELOAD_PLUGINS();
     $.CSFRAMEWORK.ICONS_MANAGER();
     $.CSFRAMEWORK.SHORTCODE_MANAGER();

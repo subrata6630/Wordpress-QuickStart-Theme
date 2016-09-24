@@ -1,13 +1,4 @@
-<?php
-/**
- * The template for displaying post excerpts. 
- *
- * @package WordPress
- */
-?>
-
-<?php if(have_posts()) : ?>
-<?php while (have_posts()) : the_post(); ?>		
+<?php if(have_posts()) : while (have_posts()) : the_post(); ?>		
 	<div class="single-post-item">
 		<a href="<?php the_permalink(); ?>">
 		<?php the_post_thumbnail('thumbnail', array('class' => 'alignleft')); ?>
@@ -15,7 +6,9 @@
         <p class="post-meta"><?php the_time('M d, Y') ?></p>
 		<?php the_excerpt(); ?> 
 	</div>
-<?php endwhile; ?>	
-<?php endif; ?>
+<?php endwhile; endif; ?>
 
-<?php if (function_exists('wp_pagenavi')) { wp_pagenavi(); } else { include('navigation.php'); } ?>
+
+<div class="ppm-pagination">
+    <?php echo paginate_links(); ?>
+</div>

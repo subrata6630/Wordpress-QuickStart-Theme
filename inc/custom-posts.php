@@ -8,16 +8,13 @@ function ppm_quickstart_theme_custom_post() {
 				'singular_name' => __( 'CPT' ),
 				'add_new_item' => __( 'Add New CPT' )
 			),
-			'public' => true,
+			'public' => false,
+			'show_ui' => true,
 			'supports' => array('title', 'editor', 'thumbnail', 'page-attributes'),
 		)
 	);
 	
-}
-
-
-
-function ppm_quickstart_custom_post_taxonomy() {
+    
 	register_taxonomy(
 		'cpt_cat',  
 		'cpt', 
@@ -31,6 +28,5 @@ function ppm_quickstart_custom_post_taxonomy() {
 				'with_front'        => true 
 				)
 			)
-	);
+	);    
 }
-add_action( 'init', 'ppm_quickstart_custom_post_taxonomy');   
